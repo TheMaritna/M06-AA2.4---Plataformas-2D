@@ -68,7 +68,9 @@ public class PlayerMovment2D : MonoBehaviour
     public InputSystem_Actions input;
     float carriedVelocity;
 
-
+    private Transform currentPlatform;
+    private Transform lastPlatformPos;
+    float platformOffsetX;
     private void Awake()
     {
         input = new InputSystem_Actions();
@@ -94,7 +96,7 @@ public class PlayerMovment2D : MonoBehaviour
     {
         PlayerSpriteManagment();
 
-        if (lifeSystem.isDead || !haveControl) return;
+        if (!haveControl) return;
 
         Movment();
 
@@ -114,8 +116,8 @@ public class PlayerMovment2D : MonoBehaviour
         float aimY = aim.y;
 
         // Deadzones
-        float movementDeadzone = 0.2f; 
-        float verticalAimLock = 0.2f; 
+        float movementDeadzone = 0.2f;
+        float verticalAimLock = 0.2f;
 
         if (canMove)
         {
@@ -191,9 +193,26 @@ public class PlayerMovment2D : MonoBehaviour
             StartCoroutine(jumpAnim());
     }
 
-    private bool IsGroudnded()
+    public bool IsGroudnded()
     {
         return Physics2D.OverlapCircle(groundCheck.position, 0.2f, groundLayer);
+    }
+    private bool IsPlatform()
+    {
+        Collider2D hit = Physics2D.OverlapCircle(groundCheck.position, 0.2f, groundLayer);
+
+        if (hit != null && hit.CompareTag("MovPlat"))
+        {
+            if (hit.transform != currentPlatform)
+            {
+                currentPlatform = hit.transform;
+                platformOffsetX = transform.position.x - currentPlatform.position.x;
+            }
+            return true;
+        }
+
+        currentPlatform = null;
+        return false;
     }
     private bool CheckSlope()
     {
@@ -262,7 +281,23 @@ public class PlayerMovment2D : MonoBehaviour
 
     private void FixedUpdate()
     {
-        if (lifeSystem.isDead || !haveControl) return;
+        bool onPlatform = IsPlatform();
+
+        if (onPlatform && currentPlatform != null)
+        {
+            if (horizontal != 0)
+            {
+                platformOffsetX = transform.position.x - currentPlatform.position.x;
+            }
+            else
+            {
+                transform.position = new Vector2(
+                    currentPlatform.position.x + platformOffsetX,
+                    transform.position.y
+                );
+            }
+        }
+        if (!haveControl) return;
 
         onSlope = CheckSlope();
 
@@ -406,4 +441,5 @@ public class PlayerMovment2D : MonoBehaviour
             rb.gravityScale = 8;
         }
     }
+
 }
