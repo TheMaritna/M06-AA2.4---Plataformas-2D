@@ -40,7 +40,11 @@ public class PlayerMovment2D : MonoBehaviour
     private Vector2 slopeNormal;
     public float slideDownForce = 25f;
 
-
+    [Header("Flip Settings")]
+    public float flipSpeed = 720f;
+    private bool isFlipping;
+    private bool canFlip = true;
+    private float rotatedAmount;
 
     [Header("Art & Sound")]
     public Animator animManager;
@@ -104,7 +108,8 @@ public class PlayerMovment2D : MonoBehaviour
         if (!isWallJumping) Flip();
         WallSlide();
         wallJump();
-        //animations();
+        Animations();
+        HandleFrontFlip();
     }
 
     private void Movment()
@@ -163,6 +168,11 @@ public class PlayerMovment2D : MonoBehaviour
             rb.linearVelocity = new Vector2(rb.linearVelocity.x, jumpPower);
             jumpBuferTimeCounter = 0;
             JumpSound.Play();
+
+            if (canFlip)
+            {
+                StartFrontFlip();
+            }
         }
 
         // Cut jump short
@@ -171,26 +181,52 @@ public class PlayerMovment2D : MonoBehaviour
     }
 
 
-    private void animations()
+    private void Animations()
     {
-        if (horizontal == 0 && IsGroudnded())
+        bool grounded = IsGroudnded();
+
+        // Reset general
+        animManager.SetBool("Idle", false);
+        animManager.SetBool("Running", false);
+        animManager.SetBool("Jump", false);
+        animManager.SetBool("Slide", false);
+        animManager.SetBool("Wall", false);
+
+        // PRIORIDAD DE ESTADOS
+
+        // 1️ Slide (máxima prioridad en suelo)
+        if (isSliding && grounded)
         {
-            animManager.enabled = true;
-            animManager.SetBool("IdelAnim", true);
-            animManager.SetBool("RunAnim", false);
-            SpritePlayer.transform.localScale = new Vector2(SpritePlayer.transform.localScale.x, SpritePlayer.transform.localScale.y);
-        }
-        else if (IsGroudnded())
-        {
-            animManager.SetBool("IdelAnim", false);
-            animManager.SetBool("RunAnim", true);
+            animManager.SetBool("Slide", true);
+            return;
         }
 
-        if (!IsGroudnded()) animManager.enabled = false;
-        if (IsGroudnded()) isJumpingAnim = false;
+        // 2️ Wall Slide
+        if (isWalSliding)
+        {
+            animManager.SetBool("Wall", true);
+            return;
+        }
 
-        if (input.Player.Jump.IsPressed() && !IsGroudnded())
-            StartCoroutine(jumpAnim());
+        // 3️ Jump (si no está en suelo)
+        if (!grounded)
+        {
+            animManager.SetBool("Jump", true);
+            return;
+        }
+
+        // 4️ Running
+        if (grounded && Mathf.Abs(horizontal) > 0.1f)
+        {
+            animManager.SetBool("Running", true);
+            return;
+        }
+
+        // 5️ Idle
+        if (grounded)
+        {
+            animManager.SetBool("Idle", true);
+        }
     }
 
     public bool IsGroudnded()
@@ -385,18 +421,54 @@ public class PlayerMovment2D : MonoBehaviour
             transform.localScale = localScale;
         }
     }
-
-    private IEnumerator jumpAnim()
+    private void StartFrontFlip()
     {
-        if (!isJumpingAnim)
+        isFlipping = true;
+        canFlip = false;
+        rotatedAmount = 0f;
+    }
+
+    private void HandleFrontFlip()
+    {
+        if (IsGroudnded())
         {
-            isJumpingAnim = true;
-            SpritePlayer.transform.localScale = new Vector2(1f, 0.5f);
-            yield return new WaitForSeconds(0.1f);
-            SpritePlayer.transform.localScale = new Vector2(0.8f, 1);
-            yield return new WaitForSeconds(0.2f);
-            SpritePlayer.transform.localScale = new Vector2(1, 1);
+            canFlip = true;
+            SpritePlayer.rotation = Quaternion.identity;
         }
+
+        if (!isFlipping) return;
+
+        float direction = isFacingRight ? -1f : 1f;
+        float rotationStep = flipSpeed * Time.deltaTime;
+
+        SpritePlayer.Rotate(0f, 0f, rotationStep * direction);
+        rotatedAmount += rotationStep;
+
+        if (rotatedAmount >= 360f)
+        {
+            isFlipping = false;
+            SpritePlayer.rotation = Quaternion.identity;
+        }
+
+
+    }
+
+    private IEnumerator ResetRotationSmooth()
+    {
+        float duration = 0.15f;
+        float elapsed = 0f;
+
+        Quaternion startRot = SpritePlayer.transform.rotation;
+        Quaternion targetRot = Quaternion.Euler(0f, 0f, 0f);
+
+        while (elapsed < duration)
+        {
+            elapsed += Time.deltaTime;
+            SpritePlayer.transform.rotation = Quaternion.Lerp(startRot, targetRot, elapsed / duration);
+            yield return null;
+        }
+
+        SpritePlayer.transform.rotation = targetRot;
     }
 
     public void InpulsFeedBack(float hitImpact, float knockdownTime)
@@ -427,10 +499,6 @@ public class PlayerMovment2D : MonoBehaviour
     private void OnTriggerEnter2D(Collider2D collision)
     {
         if (collision.CompareTag("scale")) canScale = true;
-        if (collision.CompareTag("BossBullet"))
-        {
-            lifeSystem.Hit(100);
-        }
     }
 
     private void OnTriggerExit2D(Collider2D collision)
