@@ -6,6 +6,8 @@ TagManager:
   tags:
   - MovPlat
   - dead
+  - cookie
+  - scale
   layers:
   - Default
   - TransparentFX

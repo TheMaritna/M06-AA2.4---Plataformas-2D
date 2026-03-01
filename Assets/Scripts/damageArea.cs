@@ -1,57 +1,97 @@
 using UnityEngine;
-using System.Collections;
 
 public class damageArea : MonoBehaviour
 {
-    public Color colorSeguro = Color.green;
-    public Color colorPeligro = Color.red;
-    public Color colorHit = Color.white;
-    public float tiempoAdvertencia = 3f;
-    public float tiempoActivo = 2f;
+    [Header("Sprites")]
+    public Sprite spriteDefault;
+    public Sprite spriteAdvertencia;
+    public Sprite spriteAtaque;
+
+    [Header("Tiempos")]
+    public float tiempoDefault = 2f;
+    public float tiempoAdvertencia = 2f;
+    public float tiempoAtaque = 1.5f;
+
+    public float velocidadParpadeo = 0.15f;
     public float daño = 1f;
 
     private SpriteRenderer sr;
-    private bool estaActivo = false;
-    private bool mostrandoHit = false;
+
     private float timer = 0f;
+    private float blinkTimer = 0f;
+
+    private enum Estado { Default, Advertencia, Ataque }
+    private Estado estadoActual;
 
     void Start()
     {
         sr = GetComponent<SpriteRenderer>();
+        CambiarEstado(Estado.Default);
     }
 
     void Update()
     {
-        if (mostrandoHit) return;
+        float delta = Time.deltaTime * PlayerTime.TIME;
+        timer += delta;
 
-        timer += Time.deltaTime * PlayerTime.TIME;
-
-        if (!estaActivo)
+        switch (estadoActual)
         {
-            float progreso = timer / tiempoAdvertencia;
-            sr.color = Color.Lerp(colorSeguro, colorPeligro, progreso);
+            case Estado.Default:
+                if (timer >= tiempoDefault)
+                {
+                    CambiarEstado(Estado.Advertencia);
+                }
+                break;
 
-            if (timer >= tiempoAdvertencia)
-            {
-                estaActivo = true;
-                timer = 0f;
-                sr.color = colorHit;
-            }
+            case Estado.Advertencia:
+                blinkTimer += delta;
+
+                if (blinkTimer >= velocidadParpadeo)
+                {
+                    blinkTimer = 0f;
+                    sr.sprite = sr.sprite == spriteDefault ? spriteAdvertencia : spriteDefault;
+                }
+
+                if (timer >= tiempoAdvertencia)
+                {
+                    CambiarEstado(Estado.Ataque);
+                }
+                break;
+
+            case Estado.Ataque:
+                if (timer >= tiempoAtaque)
+                {
+                    CambiarEstado(Estado.Default);
+                }
+                break;
         }
-        else
+    }
+
+    void CambiarEstado(Estado nuevoEstado)
+    {
+        estadoActual = nuevoEstado;
+        timer = 0f;
+        blinkTimer = 0f;
+
+        switch (estadoActual)
         {
-            if (timer >= tiempoActivo)
-            {
-                estaActivo = false;
-                timer = 0f;
-                sr.color = colorHit;
-            }
+            case Estado.Default:
+                sr.sprite = spriteDefault;
+                break;
+
+            case Estado.Advertencia:
+                sr.sprite = spriteDefault;
+                break;
+
+            case Estado.Ataque:
+                sr.sprite = spriteAtaque;
+                break;
         }
     }
 
     private void OnTriggerStay2D(Collider2D other)
     {
-        if (estaActivo && other.CompareTag("Player"))
+        if (estadoActual == Estado.Ataque && other.CompareTag("Player"))
         {
             HelthSystem health = other.GetComponent<HelthSystem>();
             if (health != null)
@@ -60,5 +100,4 @@ public class damageArea : MonoBehaviour
             }
         }
     }
-
 }

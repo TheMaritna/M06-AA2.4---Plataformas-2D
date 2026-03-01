@@ -78,8 +78,8 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: -10
-  m_Sprite: {fileID: 7482667652216324306, guid: 82b3048381b40404b85a3d158684ab29, type: 3}
-  m_Color: {r: 1, g: 0.77647066, b: 0.77647066, a: 0.12941177}
+  m_Sprite: {fileID: -874448525, guid: 52f783950c8afcd4aa8656255739ce61, type: 3}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
@@ -101,11 +101,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f87ea647034b3ae47bbd734848594a16, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  colorSeguro: {r: 1, g: 0.77647066, b: 0.77647066, a: 0.15686275}
-  colorPeligro: {r: 1, g: 0.3160377, b: 0.3160377, a: 1}
-  colorHit: {r: 1, g: 1, b: 1, a: 1}
-  tiempoAdvertencia: 5
-  tiempoActivo: 0.5
+  spriteDefault: {fileID: -874448525, guid: 52f783950c8afcd4aa8656255739ce61, type: 3}
+  spriteAdvertencia: {fileID: 361136356, guid: 52f783950c8afcd4aa8656255739ce61, type: 3}
+  spriteAtaque: {fileID: -1228467194, guid: 52f783950c8afcd4aa8656255739ce61, type: 3}
+  tiempoDefault: 2
+  tiempoAdvertencia: 1
+  tiempoAtaque: 1.5
+  velocidadParpadeo: 0.1
   "da\xF1o": 100
 --- !u!61 &3681996781020896750
 BoxCollider2D:

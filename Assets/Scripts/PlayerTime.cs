@@ -22,6 +22,6 @@ public class PlayerTime : MonoBehaviour
         timeValue = Mathf.Clamp01(currentVelocity / velocityThreshold);
 
         TIME = Mathf.Lerp(minTimeScale, maxTimeScale, timeValue);
-        Debug.Log(TIME);
+        //Debug.Log(TIME);
     }
 }

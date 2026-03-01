@@ -62,6 +62,7 @@ public class PlayerMovment2D : MonoBehaviour
     public LayerMask wallLayer;
     public TrailRenderer tr;
     public Transform SpritePlayer;
+    public UIManager ui;
     private HelthSystem lifeSystem;
 
     private bool canScale;

@@ -79,7 +79,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   target1: {fileID: 2068104059392955716}
   target2: {fileID: 4134390450610073448}
-  plataformPrefab: {fileID: 1759194177649975025, guid: 880ec82b55d7cad41b00120040756918, type: 3}
+  plataformPrefab: {fileID: 8346687039026868464, guid: 880ec82b55d7cad41b00120040756918, type: 3}
   speed: 5
 --- !u!1 &7929987201291120200
 GameObject:
