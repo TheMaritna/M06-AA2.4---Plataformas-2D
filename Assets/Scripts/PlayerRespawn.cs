@@ -15,6 +15,7 @@ public class PlayerRespawn : MonoBehaviour
     public int maxCoinsToDrop = 30;
     public float dropSpeed = 10f;
     public float coinLifetime = 2f;
+    public bool isRespawn;
 
     private int scoreBeforeDeath;
 
@@ -37,7 +38,7 @@ public class PlayerRespawn : MonoBehaviour
 
         // Solución: Soltamos las monedas inmediatamente al morir
         ExplodeCoins(transform.position);
-
+        AudioManager.instance.PlaySFX("Error", 1);
         StartCoroutine(SecuenciaMuerte());
     }
 
@@ -67,6 +68,7 @@ public class PlayerRespawn : MonoBehaviour
     {
         rb.simulated = false;
         sr.enabled = false;
+        isRespawn = true;
 
         uiManager.backCount.gameObject.SetActive(true);
 
@@ -88,6 +90,7 @@ public class PlayerRespawn : MonoBehaviour
 
         sr.enabled = true;
         rb.simulated = true;
+        isRespawn = false;
     }
 
     public void ActualizarCheckpoint(Vector2 nuevaPosicion)

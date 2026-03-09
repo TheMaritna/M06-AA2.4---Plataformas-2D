@@ -49,9 +49,6 @@ public class PlayerMovment2D : MonoBehaviour
     [Header("Art & Sound")]
     public Animator animManager;
     private bool isJumpingAnim;
-
-    public AudioSource JumpSound;
-    public AudioSource DashSound;
     public ParticleSystem DustRun;
 
     [Header("References")]
@@ -69,6 +66,7 @@ public class PlayerMovment2D : MonoBehaviour
     private bool isCrouching;
     public bool canMove = true;
     public bool haveControl = true;
+    private bool wallJumpFirstFrame = false;
 
     public InputSystem_Actions input;
     float carriedVelocity;
@@ -168,7 +166,7 @@ public class PlayerMovment2D : MonoBehaviour
         {
             rb.linearVelocity = new Vector2(rb.linearVelocity.x, jumpPower);
             jumpBuferTimeCounter = 0;
-            JumpSound.Play();
+            AudioManager.instance.PlaySFX("Jump", 1);
 
             if (canFlip)
             {
@@ -277,8 +275,17 @@ public class PlayerMovment2D : MonoBehaviour
         {
             isWalSliding = true;
             rb.linearVelocity = new Vector2(rb.linearVelocity.x, Mathf.Clamp(rb.linearVelocity.y, -wallSlidingSpeed, float.MaxValue));
+            if (wallJumpFirstFrame)
+            {
+                AudioManager.instance.PlaySFX("Drag", 1);
+                wallJumpFirstFrame = false;
+            }
         }
-        else isWalSliding = false;
+        else
+        {
+            isWalSliding = false;
+            wallJumpFirstFrame = true;
+        }
     }
 
     private void wallJump()
@@ -296,7 +303,7 @@ public class PlayerMovment2D : MonoBehaviour
         {
             isWallJumping = true;
             rb.linearVelocity = new Vector2(wallJumpDirecion * wallJumpingPower.x, wallJumpingPower.y);
-            JumpSound.Play();
+            AudioManager.instance.PlaySFX("Jump", 1);
             wallJumpingCounter = 0f;
 
             if (transform.localScale.x != wallJumpDirecion)
@@ -398,6 +405,7 @@ public class PlayerMovment2D : MonoBehaviour
         isSliding = true;
         currentSlideSpeed = Mathf.Max(rb.linearVelocity.magnitude, slideStartSpeed);
         tr.emitting = true;
+        AudioManager.instance.PlaySFX("Slide", 1);
         //animManager.SetBool("Crouch", true);
     }
 

@@ -37,6 +37,8 @@ public class Cookie : MonoBehaviour
         Color c = sr.color;
         c.a = 0f;
         sr.color = c;
+        AudioManager.instance.PlaySFX("EatCookie", 1);
+
 
         StartCoroutine(SpawnAndFly());
     }

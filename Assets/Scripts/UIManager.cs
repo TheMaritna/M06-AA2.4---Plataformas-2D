@@ -7,6 +7,10 @@ public class UIManager : MonoBehaviour
     public TextMeshProUGUI cookieCount;
     public Transform cookiesCountTransform;
     public int score;
+    private void Update()
+    {
+        PlayerData.DATA.cookies = score;
+    }
 
     public void ActualizarTexto(string texto)
     {
@@ -17,6 +21,7 @@ public class UIManager : MonoBehaviour
     {
         score += amount;
         cookieCount.text = score.ToString();
+        AudioManager.instance.PlaySFX("Incremental", 1);
     }
     public int GetScore()
     {
