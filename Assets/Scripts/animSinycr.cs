@@ -3,12 +3,16 @@ using UnityEngine;
 public class animSinycr : MonoBehaviour
 {
     private Animator anim;
+    public bool isActive = true;
     private void Start()
     {
         anim = GetComponent<Animator>();
     }
     private void Update()
     {
-        anim.speed = PlayerTime.TIME;
+        if (isActive)
+            anim.speed = PlayerTime.TIME;
+        else
+            anim.speed = 1;
     }
 }

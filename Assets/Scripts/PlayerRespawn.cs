@@ -71,6 +71,7 @@ public class PlayerRespawn : MonoBehaviour
         isRespawn = true;
 
         uiManager.backCount.gameObject.SetActive(true);
+        uiManager.AddDeath();
 
         for (int i = 3; i > 0; i--)
         {

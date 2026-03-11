@@ -8,6 +8,10 @@ public class Door : MonoBehaviour
     {
         if(player!=null)
             player.transform.position = transform.position;
+        if (PlayerData.DATA.uiManager.levesHasEnd && PlayerData.DATA.GetComponent<PlayerMovment2D>().input.Player.Jump.WasPressedThisFrame())
+            nextScene();
+        else if (PlayerData.DATA.uiManager.levesHasEnd && PlayerData.DATA.GetComponent<PlayerMovment2D>().input.Player.Crouch.WasPressedThisFrame())
+            resetScene();
 
     }
     private void OnTriggerEnter2D(Collider2D collision)
@@ -25,6 +29,14 @@ public class Door : MonoBehaviour
 
     public void OpenDoor()
     {
+        PlayerData.DATA.uiManager.FinishLevel();
+    }
+    public void nextScene()
+    {
         TransitionManager.instance.LoadScene("L" + LevelToLoad);
+    }
+    public void resetScene()
+    {
+        TransitionManager.instance.ResetLevel();
     }
 }

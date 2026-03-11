@@ -34,6 +34,12 @@ public class TransitionManager : MonoBehaviour
         if (!isTransitioning)
             StartCoroutine(Close(sceneName));
     }
+    public void ResetLevel()
+    {
+        Scene currentScene = SceneManager.GetActiveScene();
+        if (!isTransitioning)
+            StartCoroutine(Close(currentScene.name));
+    }
 
     IEnumerator Close(string sceneName)
     {
