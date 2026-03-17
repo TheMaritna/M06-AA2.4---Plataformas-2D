@@ -27,6 +27,7 @@ public class TransitionManager : MonoBehaviour
         anim.transform.rotation = Quaternion.Euler(0, 0, 180);
         anim.SetTrigger("Open");
         StartCoroutine(Open());
+        
     }
 
     public void LoadScene(string sceneName)
@@ -60,11 +61,11 @@ public class TransitionManager : MonoBehaviour
     IEnumerator Open()
     {
         AudioManager.instance.PlaySFX("Open", 1);
-
         yield return new WaitForSeconds(transitionTime);
 
         transitionImage.sprite = null;
 
         isTransitioning = false;
+        PlayerData.DATA.GetComponent<PlayerMovment2D>().haveControl = true;
     }
 }

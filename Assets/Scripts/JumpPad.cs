@@ -19,6 +19,7 @@ public class JumpPad : MonoBehaviour
             if (animator != null)
             {
                 animator.SetTrigger(animationTrigger);
+                AudioManager.instance.PlaySFX("JumpPad", 1);
             }
 
             Rigidbody2D rb = collision.GetComponent<Rigidbody2D>();

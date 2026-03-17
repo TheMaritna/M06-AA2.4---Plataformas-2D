@@ -91,7 +91,7 @@ public class PlayerMovment2D : MonoBehaviour
     private void Start()
     {
         lifeSystem = GetComponent<HelthSystem>();
-        haveControl = true;
+        haveControl = false;
         canMove = true;
         tr.emitting = false;
     }

@@ -7,6 +7,7 @@ public class UIManager : MonoBehaviour
 {
     public TextMeshProUGUI backCount;
     public TextMeshProUGUI cookieCount;
+    public TextMeshProUGUI timerText;
     public Transform cookiesCountTransform;
     public int score;
 
@@ -38,6 +39,7 @@ public class UIManager : MonoBehaviour
 
     bool panelOpen = false;
     [HideInInspector]public bool levesHasEnd = false;
+    bool levelTimeHasStart = false;
 
     float levelTime;
     int deaths;
@@ -52,7 +54,11 @@ public class UIManager : MonoBehaviour
 
     private void Update()
     {
-        levelTime += Time.deltaTime;
+        if(levelTimeHasStart)
+            levelTime += Time.deltaTime;
+
+        if (PlayerData.DATA.GetComponent<PlayerMovment2D>().input.Player.Move.IsPressed() || PlayerData.DATA.GetComponent<PlayerMovment2D>().input.Player.Crouch.IsPressed())
+            levelTimeHasStart = true;
 
         PlayerData.DATA.cookies = score;
 
@@ -72,6 +78,7 @@ public class UIManager : MonoBehaviour
         {
             TransitionManager.instance.ResetLevel();
         }
+        timerText.text = "Time: " + levelTime.ToString("F2") + "s";
     }
 
     public void ActualizarTexto(string texto)
