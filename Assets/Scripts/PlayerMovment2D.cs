@@ -51,6 +51,10 @@ public class PlayerMovment2D : MonoBehaviour
     private bool isJumpingAnim;
     public ParticleSystem DustRun;
 
+    [Header("Footsteps")]
+    public float footstepRate = 0.35f;
+    private float footstepTimer;
+
     [Header("References")]
     public Rigidbody2D rb;
     public Transform groundCheck;
@@ -61,6 +65,7 @@ public class PlayerMovment2D : MonoBehaviour
     public Transform SpritePlayer;
     public UIManager ui;
     private HelthSystem lifeSystem;
+
 
     private bool canScale;
     private bool isCrouching;
@@ -94,6 +99,7 @@ public class PlayerMovment2D : MonoBehaviour
         haveControl = false;
         canMove = true;
         tr.emitting = false;
+        footstepTimer = footstepRate;
     }
     private void Update()
     {
@@ -109,6 +115,7 @@ public class PlayerMovment2D : MonoBehaviour
         wallJump();
         Animations();
         HandleFrontFlip();
+        HandleFootsteps();
     }
 
     private void Movment()
@@ -503,6 +510,26 @@ public class PlayerMovment2D : MonoBehaviour
     {
         SpritePlayer.transform.position = transform.position;
         SpritePlayer.transform.localScale = new Vector3(transform.localScale.x, SpritePlayer.localScale.y, SpritePlayer.localScale.z);
+    }
+    private void HandleFootsteps()
+    {
+        bool grounded = IsGroudnded();
+        bool isMoving = Mathf.Abs(horizontal) > 0.1f;
+
+        if (grounded && isMoving && !isSliding && !isWalSliding)
+        {
+            footstepTimer -= Time.deltaTime;
+
+            if (footstepTimer <= 0f)
+            {
+                AudioManager.instance.PlaySFX("step", 1);
+                footstepTimer = footstepRate;
+            }
+        }
+        else
+        {
+            footstepTimer = footstepRate;
+        }
     }
 
     private void OnTriggerEnter2D(Collider2D collision)

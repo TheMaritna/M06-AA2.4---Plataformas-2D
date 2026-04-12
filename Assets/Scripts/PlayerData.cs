@@ -6,9 +6,14 @@ public class PlayerData : MonoBehaviour
     public int cookies;
     public bool hasKey;
     public UIManager uiManager;
+    public PlayerMovment2D PC;
+
+    void Awake()
+    {
+        DATA = this;
+    }
     private void Start()
     {
-        DATA = GetComponent<PlayerData>();
         hasKey = false;
     }
 }

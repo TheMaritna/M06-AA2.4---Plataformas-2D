@@ -1264,6 +1264,7 @@ MonoBehaviour:
   flipSpeed: 800
   animManager: {fileID: 5325889273579688684}
   DustRun: {fileID: 0}
+  footstepRate: 0.15
   rb: {fileID: 7301166942360830996}
   groundCheck: {fileID: 1892158716586989178}
   groundLayer:
@@ -1345,6 +1346,7 @@ MonoBehaviour:
   cookies: 0
   hasKey: 0
   uiManager: {fileID: 5948479186649081358}
+  PC: {fileID: 6743611284649371269}
 --- !u!96 &6745926041242680467
 TrailRenderer:
   serializedVersion: 3
@@ -2127,6 +2129,9 @@ MonoBehaviour:
   - {fileID: 8300000, guid: e57b649020620874fa18531d71f91312, type: 3}
   - {fileID: 8300000, guid: 2abeb9feb5cf10346a6f9090ec96e4a0, type: 3}
   - {fileID: 8300000, guid: 0688bc5427fcb5741b08682736be0ee9, type: 3}
+  - {fileID: 8300000, guid: 48d282d186bf41846b2146ca5550984c, type: 3}
+  - {fileID: 8300000, guid: e3b32d1dd06ced248948d538c417cd3d, type: 3}
+  - {fileID: 8300000, guid: 7936c21a799e880419a3f521a875e263, type: 3}
   musicClips: []
 --- !u!82 &1780626813323641005
 AudioSource:
