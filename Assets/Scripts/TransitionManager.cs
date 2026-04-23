@@ -66,6 +66,7 @@ public class TransitionManager : MonoBehaviour
         transitionImage.sprite = null;
 
         isTransitioning = false;
-        PlayerData.DATA.GetComponent<PlayerMovment2D>().haveControl = true;
+        if(PlayerData.DATA != null)
+            PlayerData.DATA.GetComponent<PlayerMovment2D>().haveControl = true;
     }
 }

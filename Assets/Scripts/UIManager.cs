@@ -44,12 +44,15 @@ public class UIManager : MonoBehaviour
     float levelTime;
     int deaths;
 
-    private void Start()
+    void Start()
     {
         resetPanels();
         uiPanel.SetActive(true);
         levesHasEnd = false;
         totalCookiesInLevel = GameObject.FindGameObjectsWithTag("cookie").Length;
+        Time.timeScale = 1.0f;
+
+        uiAnim.updateMode = AnimatorUpdateMode.UnscaledTime;
     }
 
     private void Update()
@@ -64,12 +67,7 @@ public class UIManager : MonoBehaviour
 
         if (PlayerData.DATA.GetComponent<PlayerMovment2D>().input.Player.Pause.WasPressedThisFrame())
         {
-            panelOpen = !panelOpen;
-
-            if (panelOpen)
-                changePanel(pausePanel, true, true);
-            else
-                changePanel(uiPanel, true, false);
+            PauseGame();
         }
 
         uiAnim.GetComponent<animSinycr>().isActive = uiPanel.active;
@@ -193,12 +191,44 @@ public class UIManager : MonoBehaviour
     public IEnumerator animPanel(GameObject panel, bool state, bool animState)
     {
         uiAnim.SetBool("Panel", animState);
-        yield return new WaitForSeconds(timeTextDelay);
+        yield return new WaitForSecondsRealtime(timeTextDelay);
         panel.SetActive(state);
     }
     public IEnumerator endLevel()
     {
         yield return new WaitForSeconds(timeTextDelay);
         levesHasEnd = true;
+    }
+
+    public void PauseGame()
+    {
+        panelOpen = !panelOpen;
+
+        if (panelOpen)
+        {
+            changePanel(pausePanel, true, true);
+            Time.timeScale = 0f;
+        }
+        else
+        {
+            changePanel(uiPanel, true, false);
+            Time.timeScale = 1.0f;
+        }
+    }
+
+    // BUTTONS
+    public void buttonResume()
+    {
+        PauseGame();
+    }
+    public void buttonRestart()
+    {
+        Time.timeScale = 1.0f;
+        TransitionManager.instance.ResetLevel();
+    }
+    public void buttonMenu()
+    {
+        Time.timeScale = 1.0f;
+        TransitionManager.instance.LoadScene("Menu");
     }
 }
