@@ -28,10 +28,13 @@ public class PlayerMovment2D : MonoBehaviour
 
     [Header("Slide System")]
     public float slideStartSpeed = 12f;
+    public float slideStartSpeedFIX = 12f;
     public float slideAcceleration = 25f;
     public float maxSlideSpeed = 30f;
     public float slopeBoostMultiplier = 1.5f;
     public float slideFriction = 12f;
+    public float momentumDecayTime = 1.5f;
+    public float slideJumpIncres = 2f;
 
     private bool isSliding;
     private float currentSlideSpeed;
@@ -72,6 +75,7 @@ public class PlayerMovment2D : MonoBehaviour
     public bool canMove = true;
     public bool haveControl = true;
     private bool wallJumpFirstFrame = false;
+    [HideInInspector]public bool externalControl;
 
     public InputSystem_Actions input;
     float carriedVelocity;
@@ -116,6 +120,7 @@ public class PlayerMovment2D : MonoBehaviour
         Animations();
         HandleFrontFlip();
         HandleFootsteps();
+        Debug.Log("Speed : " + currentSlideSpeed);
     }
 
     private void Movment()
@@ -168,10 +173,18 @@ public class PlayerMovment2D : MonoBehaviour
         }
 
 
+
         // Full jump
         if (jumpBuferTimeCounter > 0f && coyoteTimeCounter > 0f)
         {
-            rb.linearVelocity = new Vector2(rb.linearVelocity.x, jumpPower);
+            if (isSliding)
+            {
+                currentSlideSpeed += slideJumpIncres;
+            }
+
+            float xVel = isSliding ? transform.localScale.x * currentSlideSpeed : rb.linearVelocity.x;
+            rb.linearVelocity = new Vector2(xVel, jumpPower);
+
             jumpBuferTimeCounter = 0;
             AudioManager.instance.PlaySFX("Jump", 1);
 
@@ -312,6 +325,10 @@ public class PlayerMovment2D : MonoBehaviour
             rb.linearVelocity = new Vector2(wallJumpDirecion * wallJumpingPower.x, wallJumpingPower.y);
             AudioManager.instance.PlaySFX("Jump", 1);
             wallJumpingCounter = 0f;
+            if (isSliding)
+            {
+                currentSlideSpeed += slideJumpIncres;
+            }
 
             if (transform.localScale.x != wallJumpDirecion)
             {
@@ -332,6 +349,10 @@ public class PlayerMovment2D : MonoBehaviour
 
     private void FixedUpdate()
     {
+        if (externalControl)
+        {
+            return; // NO tocar Rigidbody en absoluto
+        }
         bool onPlatform = IsPlatform();
 
         if (onPlatform && currentPlatform != null)
@@ -360,12 +381,16 @@ public class PlayerMovment2D : MonoBehaviour
 
         if (!isWallJumping)
         {
-            if (Mathf.Abs(carriedVelocity) > 0.1f)
+            float targetSpeed = horizontal * speed;
+
+            if (Mathf.Abs(carriedVelocity) > speed)
             {
+                float decayRate = Mathf.Abs(carriedVelocity - targetSpeed) / momentumDecayTime;
+
                 carriedVelocity = Mathf.MoveTowards(
                     carriedVelocity,
-                    horizontal * speed,
-                    Time.fixedDeltaTime * 20f
+                    targetSpeed,
+                    decayRate * Time.fixedDeltaTime
                 );
 
                 rb.linearVelocity = new Vector2(
@@ -375,7 +400,8 @@ public class PlayerMovment2D : MonoBehaviour
             }
             else
             {
-                rb.linearVelocity = new Vector2(horizontal * speed, rb.linearVelocity.y);
+                carriedVelocity = 0f;
+                rb.linearVelocity = new Vector2(targetSpeed, rb.linearVelocity.y);
             }
         }
 
@@ -383,18 +409,21 @@ public class PlayerMovment2D : MonoBehaviour
 
     void HandleSlide()
     {
-        if (CheckSlope())
+        if (currentSlideSpeed < slideStartSpeed)
+        {
+            currentSlideSpeed = Mathf.MoveTowards(
+                currentSlideSpeed,
+                slideStartSpeed,
+                slideAcceleration * Time.fixedDeltaTime
+            );
+        }
+        else if (CheckSlope())
         {
             float slopeAngle = Vector2.Angle(slopeNormal, Vector2.up);
-            float boost = 1 + (slopeAngle / 45f) * slopeBoostMultiplier;
+            float boost = (slopeAngle / 45f) * slopeBoostMultiplier;
+
             currentSlideSpeed += slideAcceleration * boost * Time.fixedDeltaTime;
         }
-        else
-        {
-            currentSlideSpeed += slideAcceleration * Time.fixedDeltaTime;
-        }
-
-        currentSlideSpeed = Mathf.Clamp(currentSlideSpeed, 0, maxSlideSpeed);
 
         rb.linearVelocity = new Vector2(
             transform.localScale.x * currentSlideSpeed,
@@ -410,18 +439,17 @@ public class PlayerMovment2D : MonoBehaviour
     private void StartSlide()
     {
         isSliding = true;
-        currentSlideSpeed = Mathf.Max(rb.linearVelocity.magnitude, slideStartSpeed);
+        currentSlideSpeed = slideStartSpeedFIX;
         tr.emitting = true;
         AudioManager.instance.PlaySFX("Slide", 1);
-        //animManager.SetBool("Crouch", true);
     }
 
     void StopSlide()
     {
         isSliding = false;
         carriedVelocity = currentSlideSpeed;
+        currentSlideSpeed = 0f;
         tr.emitting = false;
-        //animManager.SetBool("Crouch", false);
     }
 
 

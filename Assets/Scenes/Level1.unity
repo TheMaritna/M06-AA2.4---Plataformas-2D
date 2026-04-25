@@ -558,6 +558,22 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 1021598175113208546, guid: 1f7ee1e7c4b170d43bd125c19d545fd5, type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1021598175113208546, guid: 1f7ee1e7c4b170d43bd125c19d545fd5, type: 3}
+      propertyPath: m_AnchorMin.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1021598175113208546, guid: 1f7ee1e7c4b170d43bd125c19d545fd5, type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1021598175113208546, guid: 1f7ee1e7c4b170d43bd125c19d545fd5, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 2429286837413113012, guid: 1f7ee1e7c4b170d43bd125c19d545fd5, type: 3}
       propertyPath: Lens.OrthographicSize
       value: 11
@@ -565,6 +581,22 @@ PrefabInstance:
     - target: {fileID: 4282649720435016787, guid: 1f7ee1e7c4b170d43bd125c19d545fd5, type: 3}
       propertyPath: m_LocalPosition.x
       value: -13.07
+      objectReference: {fileID: 0}
+    - target: {fileID: 4612968535532585021, guid: 1f7ee1e7c4b170d43bd125c19d545fd5, type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4612968535532585021, guid: 1f7ee1e7c4b170d43bd125c19d545fd5, type: 3}
+      propertyPath: m_AnchorMin.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4612968535532585021, guid: 1f7ee1e7c4b170d43bd125c19d545fd5, type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4612968535532585021, guid: 1f7ee1e7c4b170d43bd125c19d545fd5, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 5479051482335089145, guid: 1f7ee1e7c4b170d43bd125c19d545fd5, type: 3}
       propertyPath: m_LocalPosition.x
@@ -585,6 +617,22 @@ PrefabInstance:
     - target: {fileID: 7789430403431946000, guid: 1f7ee1e7c4b170d43bd125c19d545fd5, type: 3}
       propertyPath: m_Name
       value: ====PlayerMovment_Martina_2D====
+      objectReference: {fileID: 0}
+    - target: {fileID: 8210579260437340200, guid: 1f7ee1e7c4b170d43bd125c19d545fd5, type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8210579260437340200, guid: 1f7ee1e7c4b170d43bd125c19d545fd5, type: 3}
+      propertyPath: m_AnchorMin.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8210579260437340200, guid: 1f7ee1e7c4b170d43bd125c19d545fd5, type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8210579260437340200, guid: 1f7ee1e7c4b170d43bd125c19d545fd5, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 8701799649170192545, guid: 1f7ee1e7c4b170d43bd125c19d545fd5, type: 3}
       propertyPath: m_IsActive

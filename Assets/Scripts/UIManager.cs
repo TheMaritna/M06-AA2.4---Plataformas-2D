@@ -8,6 +8,7 @@ public class UIManager : MonoBehaviour
     public TextMeshProUGUI backCount;
     public TextMeshProUGUI cookieCount;
     public TextMeshProUGUI timerText;
+    public TextMeshProUGUI speedText;
     public Transform cookiesCountTransform;
     public int score;
 
@@ -77,6 +78,13 @@ public class UIManager : MonoBehaviour
             TransitionManager.instance.ResetLevel();
         }
         timerText.text = "Time: " + levelTime.ToString("F2") + "s";
+        Rigidbody2D rb = PlayerData.DATA.GetComponent<Rigidbody2D>();
+
+        if (rb != null)
+        {
+            float speed = rb.linearVelocity.magnitude;
+            speedText.text = speed.ToString("F0") + " : km/h";
+        }
     }
 
     public void ActualizarTexto(string texto)

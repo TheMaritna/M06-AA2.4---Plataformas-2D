@@ -4,10 +4,14 @@ using System.Collections;
 
 public class MainMenu : MonoBehaviour
 {
-    [Header("UI")]
-    public GameObject ControlersPanel;
+    [Header("UI Panels")]
+    public GameObject levelsPanel;
+    public GameObject controllersPanel;
+    public GameObject creditsPanel;
+
     public CanvasGroup mainCanvasGroup;
-    private bool controlPanelOn;
+
+    private GameObject currentPanel;
 
     [Header("Camera Animation")]
     public Camera cam;
@@ -24,26 +28,64 @@ public class MainMenu : MonoBehaviour
     private void Start()
     {
         Time.timeScale = 1f;
-        controlPanelOn = false;
         isPlaying = false;
         mainCanvasGroup.alpha = 1f;
+
+        CloseAllPanels();
     }
 
-    private void Update()
+    void CloseAllPanels()
     {
-        ControlersPanel.SetActive(controlPanelOn);
+        levelsPanel.SetActive(false);
+        controllersPanel.SetActive(false);
+        creditsPanel.SetActive(false);
+        currentPanel = null;
     }
 
-    public void ButtonPlay()
+    void OpenPanel(GameObject panel)
+    {
+        if (currentPanel == panel)
+        {
+            panel.SetActive(false);
+            currentPanel = null;
+            return;
+        }
+
+        CloseAllPanels();
+        panel.SetActive(true);
+        currentPanel = panel;
+    }
+
+    // BOTONES UI
+    public void ButtonLevels()
+    {
+        OpenPanel(levelsPanel);
+    }
+
+    public void ButtonControllers()
+    {
+        OpenPanel(controllersPanel);
+    }
+
+    public void ButtonCredits()
+    {
+        OpenPanel(creditsPanel);
+    }
+
+    public void ButtonPlay(int Level)
     {
         if (!isPlaying)
         {
             isPlaying = true;
-            StartCoroutine(PlayAnimation());
+            if (Level == 0)
+                StartCoroutine(PlayAnimation(Level.ToString()));
+            else
+                TransitionManager.instance.LoadScene("L" + Level.ToString());
+
         }
     }
 
-    IEnumerator PlayAnimation()
+    IEnumerator PlayAnimation(string LevelNum)
     {
         yield return StartCoroutine(FadeCanvas(1f, 0f));
 
@@ -85,7 +127,7 @@ public class MainMenu : MonoBehaviour
             yield return null;
         }
 
-        SceneManager.LoadScene("L0");
+        TransitionManager.instance.LoadScene("L" + LevelNum);
     }
 
     IEnumerator FadeCanvas(float from, float to)
@@ -103,11 +145,6 @@ public class MainMenu : MonoBehaviour
         }
 
         mainCanvasGroup.alpha = to;
-    }
-
-    public void ButtonControlers()
-    {
-        controlPanelOn = !controlPanelOn;
     }
 
     public void ButtonExit()
