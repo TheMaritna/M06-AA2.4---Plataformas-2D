@@ -23,6 +23,10 @@ public class AudioManager : MonoBehaviour
             Destroy(gameObject);
         }
     }
+    private void Start()
+    {
+        PlayMusic("PukiAndCookie_Music",true);
+    }
 
     public void PlaySFX(string clipName, float volume = 1f)
     {

@@ -2392,10 +2392,6 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 744132558324586583, guid: 9a9512e0decf5e84a90b19ad6c8509bb, type: 3}
-      propertyPath: sfxSource
-      value: 
-      objectReference: {fileID: 1552241606}
     - target: {fileID: 5093232083155690025, guid: 9a9512e0decf5e84a90b19ad6c8509bb, type: 3}
       propertyPath: m_Name
       value: SoundManager
@@ -2405,11 +2401,6 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 9a9512e0decf5e84a90b19ad6c8509bb, type: 3}
---- !u!82 &1552241606 stripped
-AudioSource:
-  m_CorrespondingSourceObject: {fileID: 283739405647915365, guid: 9a9512e0decf5e84a90b19ad6c8509bb, type: 3}
-  m_PrefabInstance: {fileID: 1552241605}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1556350868
 GameObject:
   m_ObjectHideFlags: 0
