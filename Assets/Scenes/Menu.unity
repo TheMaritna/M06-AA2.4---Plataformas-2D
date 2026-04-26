@@ -4412,7 +4412,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: V.0.0.3
+  m_text: V.0.1.2
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: df32ee66d661de541ba3fcdc6310da99, type: 2}
   m_sharedMaterial: {fileID: 2970761391459589586, guid: df32ee66d661de541ba3fcdc6310da99, type: 2}
@@ -5700,6 +5700,18 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 810096865}
     m_Modifications:
+    - target: {fileID: 3102267850247031776, guid: d4f33b147a6c942448a5750ad46e3705, type: 3}
+      propertyPath: m_SizeDelta.x
+      value: 61.37
+      objectReference: {fileID: 0}
+    - target: {fileID: 3102267850247031776, guid: d4f33b147a6c942448a5750ad46e3705, type: 3}
+      propertyPath: m_SizeDelta.y
+      value: 41.61
+      objectReference: {fileID: 0}
+    - target: {fileID: 3102267850247031776, guid: d4f33b147a6c942448a5750ad46e3705, type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: -0.76
+      objectReference: {fileID: 0}
     - target: {fileID: 7206313169168327287, guid: d4f33b147a6c942448a5750ad46e3705, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
       value: 
@@ -5790,13 +5802,22 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8060626623579195109, guid: d4f33b147a6c942448a5750ad46e3705, type: 3}
       propertyPath: m_text
-      value: 10
+      value: + Levels In the future
+      objectReference: {fileID: 0}
+    - target: {fileID: 8060626623579195109, guid: d4f33b147a6c942448a5750ad46e3705, type: 3}
+      propertyPath: m_fontSize
+      value: 12
+      objectReference: {fileID: 0}
+    - target: {fileID: 8060626623579195109, guid: d4f33b147a6c942448a5750ad46e3705, type: 3}
+      propertyPath: m_fontSizeMin
+      value: 12
       objectReference: {fileID: 0}
     - target: {fileID: 8722201125081909878, guid: d4f33b147a6c942448a5750ad46e3705, type: 3}
       propertyPath: m_Name
       value: LevelSelector (10)
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 7206313169168327287, guid: d4f33b147a6c942448a5750ad46e3705, type: 3}
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
     m_AddedComponents: []

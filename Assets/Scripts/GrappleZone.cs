@@ -82,6 +82,7 @@ public class GrappleZone : MonoBehaviour
     {
         isGrappling = true;
         totalRotation = 0f;
+        AudioManager.instance.PlaySFX("Graple", 1);
 
         Vector2 initialVelocity = playerRb.linearVelocity;
         float entrySpeed = initialVelocity.magnitude;

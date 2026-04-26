@@ -26,6 +26,8 @@ public class AudioManager : MonoBehaviour
     private void Start()
     {
         PlayMusic("PukiAndCookie_Music",true);
+        Cursor.lockState = CursorLockMode.Locked;
+        Cursor.visible = false;
     }
 
     public void PlaySFX(string clipName, float volume = 1f)

@@ -480,6 +480,6 @@ MonoBehaviour:
   ActionText: {fileID: 7684394678251575112}
   Keyboard: {fileID: 21300000, guid: 134b84e26e3fa964aa15ed90e413dcd6, type: 3}
   Controller: {fileID: 21300000, guid: 5e50755c77010bc42a2b3acd306f6ba9, type: 3}
-  keyboardKey: Z
+  keyboardKey: z
   controllerKey: A
   actionText: Jump
